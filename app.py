@@ -24,5 +24,36 @@ song_db = [
 ]
 
 @app.get(path="/song")
-async def get_song():
-    return [song.dict() for song in song_db]
+async def get_song(id:str):
+    if (song := next (filter(lambda song: song.id == id, song_db), None)) is None:
+        return song_db
+    return song
+
+@app.post(path="/song")
+async def create_song(song: Song):
+    song_db.append(song)
+    return song
+
+@app.delete(path="/song/{id}")
+async def delete_song(id: str):
+    global song_db
+    song_db = [song for song in song_db if song.id != id]
+    return {"message": "Song deleted successfully"}
+
+
+@app.put(path="/song/{id}")
+async def update_song(id: str, updated_song: Song):
+    for index, song in enumerate(song_db):
+        if song.id == id:
+            song_db[index] = updated_song
+            return updated_song
+    return {"error": "Song not found!"}
+
+@app.patch(path="/song/{id}")
+async def partial_update_song(id: str, updated_fields: dict):
+    for index, song in enumerate(song_db):
+        if song.id == id:
+            updated_song = song.copy(update=updated_fields)
+            song_db[index] = updated_song
+            return updated_song
+    return {"error": "Song not found!"}
