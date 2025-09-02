@@ -3,6 +3,12 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 import uuid
 from typing import Optional
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from fastapi import Request
+
+# Initialize Jinja2Templates
+templates = Jinja2Templates(directory="templates")
 
 app = FastAPI(
     title="🎵Music API🎵 (Using Fast Api)",
@@ -33,6 +39,19 @@ song_db = [
     Song(id=uuid.uuid4().hex, name="Hey Jude", duration=431, album=Album(id=uuid.uuid4().hex, name="Hey Jude", release_date=datetime(1968, 8, 26))),
     Song(id=uuid.uuid4().hex, name="Bohemian Rhapsody", duration=354, album=Album(id=uuid.uuid4().hex, name="A Night at the Opera", release_date=datetime(1975, 11, 21)))
 ]
+
+def get_all_songs():
+    return song_db
+
+
+@app.get("/songs", response_class=HTMLResponse)
+async def get_songs_html(request: Request):
+    songs = get_all_songs()  # Assuming you have a function to fetch songs
+    return templates.TemplateResponse("songs.html", {
+        "request": request, 
+        "songs": songs, 
+        "title": "Song List"
+    })
 
 @app.get(
     path="/song",

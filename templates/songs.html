@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        .table-container {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #34495e;
+            color: #fff;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        tr {
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fbfd;
+        }
+
+        tr:hover {
+            background-color: #eef3f8;
+            transition: background 0.3s ease;
+        }
+
+        td {
+            color: #555;
+        }
+
+        .song-id {
+            font-family: monospace;
+            color: #888;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 20px;
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .date {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>{{ title }}</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Song ID</th>
+                    <th>Song Name</th>
+                    <th>Duration (sec)</th>
+                    <th>Album Name</th>
+                    <th>Release Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                <tr>
+                    <td class="song-id">{{ song.id[:8] }}...</td>
+                    <td><span class="badge">{{ song.name }}</span></td>
+                    <td>{{ song.duration }}</td>
+                    <td>{{ song.album.name }}</td>
+                    <td class="date">{{ song.album.release_date.strftime("%Y-%m-%d") }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
