@@ -19,7 +19,7 @@ This project is a small example API developed as a learning exercise for the mic
 ## Installation
 
 ```bash
-pip install fastapi uvicorn
+pip install -r requirements.txt
 ```
 
 ## Running
