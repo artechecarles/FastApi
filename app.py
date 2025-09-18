@@ -113,3 +113,15 @@ async def partial_update_song(id: str, updated_fields: SongPartialUpdate):
             song_db[index] = updated_song
             return updated_song
     return {"error": "Song not found!"}
+
+
+@app.delete("/songs/delete/{id}", response_class=HTMLResponse)
+async def delete_song_and_update_table(request: Request, id: str):
+    global song_db
+    if next(filter(lambda song: song.id == id, song_db), None):
+        song_db = [song for song in song_db if song.id != id]
+    
+    return templates.TemplateResponse("partials/song_table_body.html", {
+        "request": request, 
+        "songs": song_db
+    })

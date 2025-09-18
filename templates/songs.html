@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
@@ -58,6 +59,7 @@
         tr:hover {
             background-color: #eef3f8;
             transition: background 0.3s ease;
+            cursor: pointer;
         }
 
         td {
@@ -99,11 +101,7 @@
                     <th>Release Date</th>
                 </tr>
             </thead>
-            <tbody>
-                {% for song in songs %}
-                    {% include "partials/song_row.html" %}
-                {% endfor %}
-            </tbody>
+            {% include "partials/song_table_body.html" %}
         </table>
     </div>
 </body>
