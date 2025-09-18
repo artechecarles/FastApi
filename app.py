@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Form
 from pydantic import BaseModel, Field
 from datetime import datetime
 import uuid
@@ -51,6 +51,23 @@ async def get_songs_html(request: Request):
         "request": request, 
         "songs": songs, 
         "title": "Song List"
+    })
+
+@app.post("/songs", response_class=HTMLResponse)
+async def add_song(
+    request: Request,
+    name: str = Form(...),
+    duration: int = Form(...),
+    album_name: str = Form(...),
+    release_date: datetime = Form(...)
+):
+    new_album = Album(id=uuid.uuid4().hex, name=album_name, release_date=release_date)
+    new_song = Song(id=uuid.uuid4().hex, name=name, duration=duration, album=new_album)
+    song_db.append(new_song)
+    
+    return templates.TemplateResponse("partials/song_table_body.html", {
+        "request": request, 
+        "songs": song_db
     })
 
 @app.get(
