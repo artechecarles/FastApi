@@ -1,0 +1,7 @@
+<tr>
+    <td class="song-id">{{ song.id[:8] }}...</td>
+    <td><span class="badge">{{ song.name }}</span></td>
+    <td>{{ song.duration }}</td>
+    <td>{{ song.album.name }}</td>
+    <td class="date">{{ song.album.release_date.strftime("%Y-%m-%d") }}</td>
+</tr>
